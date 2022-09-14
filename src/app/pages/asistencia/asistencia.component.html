@@ -1,0 +1,159 @@
+<div class="card">
+
+    <form (ngSubmit)="crear()" autocomplete="off" [formGroup]="registerForm">
+
+        <div class="card-body">
+
+
+            <div class="form-group">
+                <label for="exampleInputuname">Docente *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Docente'" [settings]="dropdownSettingsSingle"
+                    [data]="dropdownListPersonas" (onSelect)="onItemSelectPersona($event)"
+                    (onSelectAll)="onSelectAllPersona($event)" (onDeSelect)="onDeSelectPersona($event)"
+                    (onDeSelectAll)="onDeSelectAllPersona($event)" formControlName="idDocente">
+                </ng-multiselect-dropdown>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Horario *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Docente'" [settings]="dropdownSettingsSingle"
+                    [data]="dropdownListHorarios" (onSelect)="onItemSelectHorario($event)"
+                    (onSelectAll)="onSelectAllHorario($event)" (onDeSelect)="onDeSelectHorario($event)"
+                    (onDeSelectAll)="onDeSelectAllHorario($event)" formControlName="idHorario">
+                </ng-multiselect-dropdown>
+            </div>
+
+            <div class="form-group" *hasRole="[
+            'Super_Admin_role',
+            'Admin_Charlotte_Academico_role',
+            'Docente_Charlotte_Academico_role',
+            'Admin_UK_Academico_role',
+            'Docente_UK_Academico_role',
+            ]">
+                <label for="exampleInputuname">Unidad *</label>
+                <div class="input-group">
+                    <select class="form-control custom-select" formControlName="unidad">
+                        <option value="Unidad 0">Unidad 0</option>
+                        <option value="Unidad 1">Unidad 1</option>
+                        <option value="Unidad 2">Unidad 2</option>
+                        <option value="Unidad 3">Unidad 3</option>
+                        <option value="Unidad 4">Unidad 4</option>
+                        <option value="Unidad 5">Unidad 5</option>
+                        <option value="Unidad 6">Unidad 6</option>
+                        <option value="Unidad 7">Unidad 7</option>
+                        <option value="Unidad 8">Unidad 8</option>
+                        <option value="Unidad 9">Unidad 9</option>
+                        <option value="Unidad 10">Unidad 10</option>
+                    </select>
+                </div>
+                <small class="form-control-feedback"> Seleccione unidad </small>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('unidad')">La unidad es obligatoria</p>
+                </div>
+            </div>
+
+            <div class="form-group" *hasRole="[
+            'Super_Admin_role',
+            'Admin_Charlotte_Academico_role',
+            'Docente_Charlotte_Academico_role',
+            'Admin_UK_Academico_role',
+            'Docente_UK_Academico_role',
+            ]">
+                <label for="exampleInputuname">Lección*</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-user"></i></div>
+                    <input type="text" class="form-control" placeholder="Lección" formControlName="leccion">
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('leccion')">La lección es obligatorio</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputuname">Tema tratado y pagina*</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-user"></i></div>
+                    <input type="text" class="form-control" placeholder="Tema tratado" formControlName="temaTratado">
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('nombre')">El Nombre de la ciudad es obligatorio</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label for="exampleInputuname">Fecha *</label>
+                    </div>
+                    <div class="panel-body">
+                        <input class="form-control" type="text" mwlFlatpickr [altInput]="true"
+                            [convertModelValue]="true" formControlName="fecha" >
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="row" *ngFor="let estudiante of listaEstudiantes; let index=index">
+                <div class="col-md-6">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input"
+                            (click)="enviarDatosEstudiante(estudiante,index)" checked>
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">{{estudiante.nombre}}</span>
+
+                    </label>
+                </div>
+            </div> -->
+
+
+            <!-- <div formArrayName="prueba">
+                <div class="row" *ngFor="let pruebaForm of prueba.controls">
+                    <div [formGroup]="pruebaForm">
+                        <div class="col-md-6">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" checked formControlName="estado">
+                                <span class="custom-control-indicator"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" formControlName="comentario">
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="form-group">
+                <div class="panel panel-default" formArrayName="prueba">
+                    <div class="row" *ngFor = "let item of getPrueba.controls; let pointIndex=index" [formGroupName]="pointIndex">
+                        <div class="col-md-6">
+                            <label class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" formControlName="estado" checked>
+                                <span class="custom-control-indicator"></span>
+                                <input class="form-control" formControlName="estudiante" [attr.disabled]="true">
+                            </label>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <input class="form-control" type="text" formControlName="comentario" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Observaciones </label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-user"></i></div>
+                    <textarea type="text" class="form-control" placeholder="Observaciones" formControlName="observaciones"></textarea>
+                </div>
+            </div>
+
+
+            <div>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                <a (click)="cancelarGuardado()" class="btn btn-inverse waves-effect waves-light">Cancelar</a>
+            </div>
+
+        </div>
+    </form>
+
+</div>

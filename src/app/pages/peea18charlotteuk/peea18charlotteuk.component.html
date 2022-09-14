@@ -1,0 +1,321 @@
+<div class="card">
+
+    <form (ngSubmit)="crearPeea18()" autocomplete="off" [formGroup]="registerForm">
+
+
+        <div class="card-body">
+            <h4 class="card-title">Agregar PEEA </h4>
+            <h6 class="card-subtitle">Ingrese todos los datos solicitados</h6>
+
+            <div class="row p-t-20">
+                <div class="col-md-12">
+                <div class="form-group">
+                    <label for="exampleInputuname">Estudiante *</label>
+                    <ng-multiselect-dropdown [placeholder]="'Seleccione Estudiante'" [settings]="dropdownSettingsSingle"
+                        [data]="dropdownListEstudiantes" (onSelect)="onItemSelectEstudiante($event)"
+                        (onSelectAll)="onSelectAllEstudiante($event)" (onDeSelect)="onDeSelectEstudiante($event)"
+                        (onDeSelectAll)="onDeSelectAllEstudiante($event)" formControlName="idEstudiante">
+                    </ng-multiselect-dropdown>
+                </div>
+                </div>
+            </div>
+
+            <div class="row p-t-20">
+                <div class="col-md-6">
+                    <label for="direccion">Lugar de nacimiento</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="ti-location-pin"></i></div>
+                        <input type="text" class="form-control" id="pregunta1" placeholder="Lugar de nacimiento"
+                            formControlName="pregunta1">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="direccion">Redes sociales (estudiante - representante) </label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class=" ti-themify-favicon"></i></div>
+                        <input type="text" class="form-control" id="pregunta2" placeholder="Redes sociales"
+                            formControlName="pregunta2">
+                    </div>
+                </div>
+            </div>
+            <div class="row p-t-20">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="direccion">Nombre de la instiución </label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-time"></i></div>
+                            <input type="text" class="form-control" id="pregunta3" placeholder="Nombre de la instiución"
+                                formControlName="pregunta3">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="cedula">Expectativa Personal *</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-harddrives"></i></div>
+                            <input type="text" class="form-control" id="pregunta4"
+                                placeholder="Expectativa Personal" formControlName="pregunta4">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-t-20">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-info btn-circle"
+                        (click)="abrirModal()"><i class="fa fa-plus"></i> </button>
+
+                        <!-- Crear una tabla con dos atributos -->
+                        <div>Lista </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Edad</th>
+                                    <th>Ocupacion</th>
+                                    <th>Parentesco</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let peea of peeas; let index=index">
+                                    <td>{{peea.nombre}}</td>
+                                    <td>{{peea.edad}}</td>
+                                    <td>{{peea.ocupacion}}</td>
+                                    <td>{{peea.parentesco}}</td>
+                                    
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <div class="demo-switch-title">Estado civil de los padres</div>
+                        <select class="form-control custom-select" formControlName="pregunta6">
+                            <option value="Soltero">Soltero</option>
+                            <option value="Casado">Casado</option>
+                            <option value="Divorciado">Divorciado</option>
+                            <option value="Union Libre">Union Libre</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-t-20">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Con quien usted practica inglés</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-home"></i></div>
+                            <input type="text" class="form-control" id="pregunta7"
+                                placeholder="Con quien usted practica inglés" formControlName="pregunta7">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pregunta8">¿Tiene alguna dificultad visual?</label>
+
+                        <div class="col-sm-4">
+                            <div class="form-check">
+                                <label class="custom-control custom-radio">
+                                    <input #radio1 id="radio1" name="radio" type="radio" class="custom-control-input" (click)="habilitarCampos('Si','visual')">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Si</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="custom-control custom-radio" >
+                                    <input #radio2 id="radio2" name="radio" type="radio" class="custom-control-input"  (click)="habilitarCampos('No','visual')">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">No</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <label>Especifique</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-eye"></i></div>
+                            <input  type="text" class="form-control" #visual>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-t-20">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pregunta9">¿Se ha practicado alguna vez exámenes auditivos?</label>
+                        <div class="col-sm-4">
+                            <div class="form-check">
+                                <label class="custom-control custom-radio">
+                                    <input #radio3 id="radio3" name="radio1" type="radio" class="custom-control-input" (click)="habilitarCampos('Si','auditiva')">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Si</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="custom-control custom-radio">
+                                    <input #radio4 id="radio4" name="radio1" type="radio" class="custom-control-input" (click)="habilitarCampos('No','auditiva')">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">No</span>
+                                </label>
+                            </div>
+                        </div>
+                        <label>Especifique</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-headphone"></i></div>
+                            <input type="text" class="form-control" #auditiva>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pregunta10">¿Se ha practicado alguna vez exámenes visuales?</label>
+                        <div class="col-sm-4">
+                            <div class="form-check">
+                                <label class="custom-control custom-radio">
+                                    <input #radio5 id="radio5" name="radio2" type="radio" class="custom-control-input" (click)="habilitarCampos('Si','aprendizaje')">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">Si</span>
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <label class="custom-control custom-radio">
+                                    <input #radio6 id="radio6" name="radio2" type="radio" class="custom-control-input" (click)="habilitarCampos('No','aprendizaje')">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-description">No</span>
+                                </label>
+                            </div>
+                        </div>
+                        <label>¿Cuál?</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-infinite"></i></div>
+                            <input type="text" class="form-control" #aprendizaje>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div class="row p-t-20">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pregunta11"> Principales funciones
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-receipt"></i></div>
+                            <textarea type="text" class="form-control" id="pregunta11" formControlName="pregunta11"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pregunta12"> Jornada Laboral (Especificar Horarios)
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-stamp"></i></div>
+                            <textarea type="text" class="form-control" id="pregunta12" formControlName="pregunta12"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-t-20">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="pregunta13"> Mencione los acuerdos establecidos con su Consultor Educativo
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-receipt"></i></div>
+                            <textarea type="text" class="form-control" id="pregunta13" formControlName="pregunta13"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    
+                </div>
+            </div>
+
+
+
+            <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+            <a (click)="cancelarGuardado()" class="btn btn-inverse waves-effect waves-light">Cancelar</a>
+        </div>
+    </form>
+
+</div>
+
+
+
+
+<!-- Modal  -->
+
+<div class="fondo-modal-imagen animated fadeIn fast" [class.oculto]="mostraModal">
+    <div id="responsive-modal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        style="display: block;padding-right: 17px; overflow-y: initial">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">PEEA</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        (click)="cerrarModal()">×</button>
+                </div>
+
+                <div class="card-body">
+                    <h4 class="card-title">Datos Familiares</h4>
+                    <br>
+
+                    <div class="form-group">
+                        <label for="exampleInputuname">Nombre</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input type="text" name="monto" id="" #nombre>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputuname">Edad</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input type="number" id="" #edad>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputuname">Ocupacion</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input type="text"  id="" #ocupacion>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputuname">Parentesco</label>
+                        <select class="form-control custom-select" #parentesco>
+                            <option value="Padre">Padre</option>
+                            <option value="Madre">Madre</option>
+                            <option value="Hermano">Hermano</option>
+                            <option value="Hermana">Hermana</option>
+                            <option value="Abuelo">Abuelo</option>
+                            <option value="Abuela">Abuela</option>
+                            <option value="Tio">Tío</option>
+                            <option value="Tia">Tía</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal"
+                        (click)="cerrarModal()">Close</button>
+                    <button type="button" (click)="agregar()"
+                        class="btn btn-success waves-effect waves-light">Agregar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

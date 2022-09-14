@@ -1,0 +1,19 @@
+<div class="col-md-6">
+    <div class="card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-body">Imagen Perfil</h4>
+                <img *ngIf="!imgTemp" [src]="persona?.fotoPerfil | imagen:'marcas'" height="250px" width="250px">
+                <img *ngIf="imgTemp" [src]="imgTemp" height="250px" width="250px">
+                <input  type="file" (change)="cambiarImagen($event)">
+                <br>
+                <br>
+                <div>
+                    <button type="button" class="btn btn-success waves-effect waves-light m-r-10" 
+                    [disabled]="!imagenSubir"
+                    (click)="subirImagen()">Cambiar imagen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

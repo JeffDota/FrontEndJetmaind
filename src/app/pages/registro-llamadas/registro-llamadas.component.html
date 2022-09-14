@@ -1,0 +1,70 @@
+<div class="card">
+
+    <form (ngSubmit)="crear()" autocomplete="off" [formGroup]="registerForm">
+
+        <div class="card-body">
+
+            <div class="form-group">
+                <label for="exampleInputuname">Estudiante *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Estudiante'" [settings]="dropdownSettings"
+                    [data]="dropdownListEstudiantes" (onSelect)="onItemSelectEstudiante($event)"
+                    (onSelectAll)="onSelectAllEstudiante($event)" (onDeSelect)="onDeSelectEstudiante($event)"
+                    (onDeSelectAll)="onDeSelectAllEstudiante($event)" formControlName="idEstudiante">
+                </ng-multiselect-dropdown>
+            </div>
+
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label for="exampleInputuname">Fecha *</label>
+                    </div>
+                    <div class="panel-body">
+                        <input class="form-control" type="text" mwlFlatpickr [altInput]="true"
+                            [convertModelValue]="true" formControlName="fecha">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="comentario">Comenterio</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class=" ti-comment "></i></div>
+                    <textarea type="text" class="form-control" placeholder="Ingrese comenterio"
+                        formControlName="comenterio" style="height: 200px;"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comentario">Número telefónico</label>
+                <div class="input-group">
+                    <ngx-intl-tel-input [cssClass]="'custom'" [preferredCountries]="preferredCountries"
+                        [enableAutoCountrySelect]="true" [enablePlaceholder]="false" [searchCountryFlag]="true"
+                        [searchCountryField]="[
+                            SearchCountryField.Iso2,
+                            SearchCountryField.Name
+                        ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Ecuador" [maxLength]="10"
+                        [phoneValidation]="true" [separateDialCode]="true" [numberFormat]="PhoneNumberFormat.National"
+                        name="phone" formControlName="numeroTelefonico">
+                    </ngx-intl-tel-input>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="comentario">Persona que atiende llamada</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class=" ti-comment "></i></div>
+                    <input type="text" class="form-control" placeholder="Ingrese"
+                        formControlName="personaAtiendeLlamada">
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                <a (click)="cancelarGuardado()" class="btn btn-inverse waves-effect waves-light">Cancelar</a>
+            </div>
+
+        </div>
+    </form>
+
+</div>

@@ -1,0 +1,342 @@
+<form (ngSubmit)="crearContrato()" autocomplete="off" [formGroup]="registerForm">
+    <div class="card-body">
+        <h4 class="card-title">Contrato</h4>
+        <h6 class="card-subtitle">Ingrese todos los datos solicitados</h6>
+
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha">Fecha *</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                        <input type="date" class="form-control" id="fecha" placeholder="Ingrese fecha"
+                            formControlName="fecha">
+                    </div>
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('fecha')">La fecha de nacimiento es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <!-- <div class="form-group" *ngIf="mostrarBoton"> -->
+                <div class="form-group" >
+                    <div class="demo-switch-title">Estado</div>
+                    <select class="form-control custom-select" formControlName="estado">
+                        <option value="Espera">Espera</option>
+                        <option value="Aprobado">Aprobado</option>
+                        <option value="Rechazado">Rechazado</option>
+                    </select>
+                    <small class="form-control-feedback"> Seleccione el estado </small>
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('estado')">El estado es obligatorio</p>
+                </div>
+            </div>
+        </div>
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="fecha">Origen de venta *</label>
+                    <ng-multiselect-dropdown [placeholder]="'Seleccione Origen'" [settings]="dropdownSettings"
+                        [data]="dropdownList" (onSelect)="onItemSelect($event)"
+                        (onSelectAll)="onSelectAll($event)" (onDeSelect)="onDeSelect($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)" formControlName="campania">
+                    </ng-multiselect-dropdown>
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('campania')">El origen de la venta es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="demo-switch-title">Pagina Lead</div>
+                    <select class="form-control custom-select" formControlName="paginaLead">
+                        <option value="Ilvem">Ilvem</option>
+                        <option value="Charlotte">Charlotte</option>
+                        <option value="Tomatis">Tomatis</option>
+                        <option value="Uk">Uk</option>
+                        <option value="Cambridge">Cambridge</option>
+                        <option value="Englih for kids">Englih for kids</option>
+                        <option value="Genios Lectores">Genios Lectores</option>
+                        <option value="Un mundo al revés">Un mundo al revés</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="demo-switch-title">Tipo de pago</div>
+                    <select class="form-control custom-select" formControlName="tipoPago"
+                        (change)="habilitarCampos();calculadora()"
+                        (click)="habilitarCampos();calculadora()" (keyup)="habilitarCampos();calculadora()">
+                        <option (click)="habilitarCampos();calculadora()" value="Plan">Plan</option>
+                        <option (click)="habilitarCampos();calculadora()" value="Contado">Contado</option>
+                    </select>
+                    <small class="form-control-feedback"> Seleccione el tipo de Pago </small>
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('tipoPago')">El tipo de pago es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="demo-switch-title">Estado de la venta</div>
+                    <select class="form-control custom-select" formControlName="estadoVenta"
+                        (change)="habilitarCampos();calculadora()"
+                        (click)="habilitarCampos();calculadora()" (keyup)="habilitarCampos();calculadora()">
+                        <option (click)="habilitarCampos();calculadora()" value="OK">OK</option>
+                        <option (click)="habilitarCampos();calculadora()" value="Abono">Abono</option>
+                        <option (click)="habilitarCampos();calculadora()" value="Saldo">Saldo</option>
+                    </select>
+                    <small class="form-control-feedback"> Seleccione estado de la venta </small>
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('estadoVenta')">El estado de venta es obligatorio</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleInputuname">Valor Total *</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class=" ti-money"></i></div>
+                        <input type="number" class="form-control" placeholder="Ingrese Valor Total"
+                            formControlName="valorTotal" (keyup)="calculadora()">
+                    </div>
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('valorTotal')">El valor total es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Valor Matricula </label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="ti-money"></i></div>
+                        <input type="number" class="form-control" placeholder="Ingrese Valor Matricula"
+                            formControlName="valorMatricula" (keyup)="calculadora()">
+                    </div>
+                    <div class="text-danger">
+                        <!-- <p *ngIf="campoNoValido('valorMatricula')">El email es obligatorio / Ingrese email valido</p> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="form-group" *ngIf="mostraAbono">
+                    <label for="cedula">Abono/Saldo </label>
+                    <button (click)="abrirModal()" type="button" class="btn btn-info btn-circle btn-lg "><i
+                            class="fa fa-plus"></i> </button>
+                    <!-- Crear una tabla con dos atributos -->
+                    <div>Lista de estudiantes</div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Valor</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let abon of abono; let index=index">
+                                <td>{{abon.monto}}</td>
+                                <td>{{abon.fechaPago | date:"dd-MM-yyyy"}}</td>
+                                <td>{{abon.estado}}</td>
+                                <td><a data-toggle="tooltip" data-original-title="Editar" (click)="cargar(index)">
+                                        <i class="ti-pencil"></i>
+                                    </a></td>
+                                <td><a data-toggle="tooltip" data-original-title="Eliminar" (click)="eliminar(index)">
+                                        <i class="ti-trash"></i>
+                                    </a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <div class="input-group">
+                        <div class="input-group-addon"><i class=" ti-money "></i></div>
+                        <input type="number" class="form-control" id="abono" placeholder="Ingrese Abono"
+                            formControlName="abono" (keyup)="calculadora()">
+                    </div> -->
+                    <div class="text-danger">
+                        <!-- <p *ngIf="campoNoValido('abono')">La cedula es obligatoria</p> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="telefono">Numero Cuotas</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class=" ti-layout-menu-v"></i></div>
+                        <input type="number" class="form-control" id="numeroCuotas" placeholder="Numero Cuotas"
+                            formControlName="numeroCuotas" (keyup)="calculadora()">
+                        <div class="text-danger">
+                            <!-- <p *ngIf="campoNoValido('telefono')">El numero de telefono es obligatorio</p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOAST
+            <div class="alert alert-info"> 
+            
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"> 
+                <span aria-hidden="true">×</span> 
+            </button>
+        </div> -->
+        <div *ngIf="mostrarCalculadora" class="card">
+            <div class="card-body">
+                <div class="d-flex no-block">
+                    <div class="m-r-20 align-self-center">
+                        <span class="lstick "></span>
+                    </div>
+                    <div class="align-self-center">
+                        <h6 class="text-muted m-t-10 m-b-0">Calculadora</h6>
+                        <h3 class="m-t-0">Cuotas mesuales: {{deuda}}</h3>
+                        <h3 class="m-t-0">Valor total menos matricula: {{diferenciaValorTotalMatricula}}</h3>
+                        <h3 class="m-t-0">Valor total mas 15%: {{registerForm.get('valorTotal').value*1.15}}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="demo-switch-title">Forma de pago *</div>
+                    <select class="form-control custom-select" formControlName="formaPago">
+                        <option value="PayClub (Tarjeta crédito)">PayClub (Tarjeta crédito)</option>
+                        <option value="Efectivo (Depósito)">Efectivo (Depósito)</option>
+                        <option value="Efectivo (Transferencia)">Efectivo (Transferencia)</option>
+                        <option value="Efectivo (Entrega presencial)">Efectivo (Entrega presencial)</option>    
+                        <option value="Tarjeta de crédito Datamóvil ">Tarjeta de crédito Datamóvil </option>
+                        <option value="Tarjeta de dévito Datamóvil ">Tarjeta de dévito Datamóvil </option>
+                    </select>
+                    <small class="form-control-feedback"> Seleccione el forma pago </small>
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('formaPago')">La forma de pago es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="comentario">Comentario del contrato</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class=" ti-comment "></i></div>
+                        <textarea type="text" class="form-control" id="comentario" placeholder="Ingrese comentario"
+                            formControlName="comentario"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="comentario">Comentario para director academico</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class=" ti-comment "></i></div>
+                            <textarea type="text" class="form-control"d placeholder="Ingrese comentario"
+                                formControlName="observacionesAcademicas"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="demo-switch-title">Beca Frances *</div>
+                    <select class="form-control custom-select" formControlName="becaFrances">
+                        <option value="No">No</option>
+                        <option value="Si">Si</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="comentario">Codigo contrato</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class=" ti-comment "></i></div>
+                        <input type="text" class="form-control" id="comentario" formControlName="codigoAnterior">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row p-t-20">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="demo-switch-title">Modalidad</div>
+                    <select class="form-control custom-select" formControlName="modalidad">
+                        <option value="PRESENCIAL">PRESENCIAL</option>
+                        <option value="ONLINE">ONLINE</option>
+                    </select>
+                </div>
+            </div>
+            
+        </div>
+        <button *ngIf="mostrarBoton" type="submit"
+            class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+        <a *ngIf="mostrarBoton" class="btn btn-inverse waves-effect waves-light">Cancelar</a>
+    </div>
+</form>
+
+
+
+
+<!-- Modal para abonos -->
+
+<div class="fondo-modal-imagen animated fadeIn fast" [class.oculto]="mostraModal">
+    <div id="responsive-modal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        style="display: block;padding-right: 17px; overflow-y: initial">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Agregar abono</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        (click)="cerrarModal()">×</button>
+                </div>
+
+                <div class="card-body">
+                    <h4 class="card-title">Abono</h4>
+                    <h6 class="card-subtitle">Agregar Abono</h6>
+                    <br>
+
+                    <div class="form-group">
+                        <label for="exampleInputuname">Fecha</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input type="date" name="monto" id="" #fechaAbono>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputuname">Valor</label>
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="ti-user"></i></div>
+                            <input type="number" name="monto" id="" #valorAbono>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal"
+                        (click)="cerrarModal()">Close</button>
+                    <button *ngIf="editarAbono==false" type="button" (click)="agregarAbono();calculadora()"
+                        class="btn btn-success waves-effect waves-light">Agregar</button>
+                    <button *ngIf="editarAbono==true" type="button" (click)="editarAbono1();calculadora()"
+                        class="btn btn-success waves-effect waves-light">Editar</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

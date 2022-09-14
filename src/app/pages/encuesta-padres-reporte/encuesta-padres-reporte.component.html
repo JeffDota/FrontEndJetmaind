@@ -1,0 +1,80 @@
+<div class="card">
+    <form autocomplete="off" [formGroup]="registerForm">
+        <div class="col-12">
+            
+            <div class="row">
+                
+                <div class="col-12">
+                    <div class="form-group">
+                        <label for="exampleInputuname">Docentes *</label>
+                        <ng-multiselect-dropdown [placeholder]="'Seleccione Asesor'"
+                            [settings]="dropdownSettings" [data]="dropdownListPersonas"
+                            (onSelect)="onItemSelectPersona($event)" (onSelectAll)="onSelectAllPersona($event)"
+                            (onDeSelect)="onDeSelectPersona($event)" (onDeSelectAll)="onDeSelectAllPersona($event)"
+                            formControlName="docentes">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="panel-body">
+                        <input class="form-control" type="text" mwlFlatpickr [altInput]="true"
+                            [convertModelValue]="false" [enableTime]="false" dateFormat="Y-m-d H:i"
+                            altFormat="F j, Y H:i" [inline]="false" mode="range" formControlName="rangoFechas">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-3">
+            <button (click)="Buscar()">Buscar</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="container py-5">
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-3">Pregunta 1: ¿Como califica el avance de su representado?</h3>
+        <canvas id="bar_chart1" width="400px" height="200px"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-3">Pregunta 2: ¿Como califica en general, la calidad educativa de la institución?</h3>
+        <canvas id="bar_chart2" width="400px" height="200px"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-3">Pregunta 3: ¿Ha recibido información sobre actividades y servicios extra que ofrece el centro?</h3>
+        <canvas id="bar_chart3" width="400px" height="200px"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-3">Pregunta 4: ¿Como califica usted su experiencia con nuestra plataforma educativa online?</h3>
+        <canvas id="bar_chart4" width="400px" height="200px"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-3">Pregunta 5: ¿La atención proporcionada por el docente fue?</h3>
+        <canvas id="bar_chart5" width="400px" height="200px"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-3">Pregunta 6: ¿Como califica el avance de su representado?</h3>
+        <canvas id="bar_chart6" width="400px" height="200px"></canvas>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-3">Pregunta 7: Mi nivel de satisfacción en esta entrega de reportes en cuanto a la capacitación de mi representado es:</h3>
+        
+      </div>
+    </div>
+    
+  </div>

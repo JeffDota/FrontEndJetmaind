@@ -1,0 +1,203 @@
+<div class="card">
+
+    <form (ngSubmit)="crearPersona()" autocomplete="off" [formGroup]="registerForm">
+
+
+        <div class="card-body">
+            <h4 class="card-title">Agregar Personas</h4>
+            <h6 class="card-subtitle">Ingrese todos los datos solicitados</h6>
+
+            <div class="form-group">
+                <div class="demo-switch-title">Estado</div>
+                <div class="switch">
+                    <label>
+                        <input type="checkbox" checked="" formControlName="estado"><span
+                            class="lever switch-col-cyan"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Role *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Role'" [settings]="dropdownSettings"
+                    [data]="dropdownListRole" (onSelect)="onItemSelectRole($event)"
+                    (onSelectAll)="onSelectAllRole($event)" (onDeSelect)="onDeSelectRole($event)"
+                    (onDeSelectAll)="onDeSelectAllRole($event)" formControlName="tipo">
+                </ng-multiselect-dropdown>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('tipo')">Ingrese un role</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Ciudades *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Ciudades'" [settings]="dropdownSettings"
+                    [data]="dropdownListCiudades" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)"
+                    (onDeSelect)="onDeSelect($event)" (onDeSelectAll)="onDeSelectAll($event)"
+                    formControlName="idCiudad">
+                </ng-multiselect-dropdown>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('idCiudad')">Ingrese al menos una ciudad</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputuname">Sucursales *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Sucursal'" [settings]="dropdownSettings"
+                    [data]="dropdownListSucursales" (onSelect)="onItemSelectsucursal($event)"
+                    (onSelectAll)="onSelectAllsucursal($event)" (onDeSelect)="onDeSelectsucursal($event)"
+                    (onDeSelectAll)="onDeSelectAllsucursal($event)" formControlName="idSucursal">
+                </ng-multiselect-dropdown>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('idSucursal')">Ingrese al menos una sucursal</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Marcas *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Marca'" [settings]="dropdownSettings"
+                    [data]="dropdownListMarcas" (onSelect)="onItemSelectmarca($event)"
+                    (onSelectAll)="onSelectAllmarca($event)" (onDeSelect)="onDeSelectmarca($event)"
+                    (onDeSelectAll)="onDeSelectAllmarca($event)" formControlName="idMarca">
+                </ng-multiselect-dropdown>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('idMarca')">Ingrese al menos una marca</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Nombres y Apellidos *</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-user"></i></div>
+                    <input type="text" class="form-control" placeholder="Nombres" formControlName="nombresApellidos">
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('nombresApellidos')">El Nombre y Apellido es obligatorio</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address *</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-email"></i></div>
+                    <input type="email" class="form-control" placeholder="Ingrese email" formControlName="email">
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('email')">El email es obligatorio / Ingrese email valido</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="pwd1">Password / Contraseña</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="ti-lock"></i></div>
+                    <input type="password" class="form-control" id="pwd1" placeholder="Ingrese password"
+                        formControlName="password">
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('password')">La clave es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="cedula">Cedula *</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class=" ti-id-badge"></i></div>
+                    <input type="number" class="form-control" id="cedula" placeholder="Ingrese cedula"
+                        formControlName="cedula">
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('cedula')">La cedula es obligatoria</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Telefono</label>
+                <div class="input-group">
+                    <!-- <div class="input-group-addon"><i class="fa fa-phone"></i></div> -->
+                    <ngx-intl-tel-input [cssClass]="'custom'" [preferredCountries]="preferredCountries"
+                        [enableAutoCountrySelect]="true" [enablePlaceholder]="false" [searchCountryFlag]="true"
+                        [searchCountryField]="[
+                                    SearchCountryField.Iso2,
+                                    SearchCountryField.Name
+                                ]" [selectFirstCountry]="false" [selectedCountryISO]="CountryISO.Ecuador"
+                        [maxLength]="10" [phoneValidation]="true" [separateDialCode]="true"
+                        [numberFormat]="PhoneNumberFormat.National" name="phone" formControlName="telefono">
+                    </ngx-intl-tel-input>
+                    <!-- <input type="number" class="form-control" id="telefono" placeholder="Ingrese telefono"
+                        formControlName="telefono"> -->
+                    <div class="text-danger">
+                        <p *ngIf="campoNoValido('telefono')">El numero de telefono es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="telefonodomicilio">Telefono Domicilio</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-phone"></i></div>
+                    <input type="number" class="form-control" id="telefonodomicilio"
+                        placeholder="Ingrese telefono domicilio" formControlName="telefonoDomicilio">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="fechaNacimiento">Fecha Nacimiento *</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                    <input type="date" class="form-control" id="fechaNacimiento" placeholder="Ingrese fecha Nacimiento"
+                        formControlName="fechaNacimiento">
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('fechaNacimiento')">La fecha de nacimiento es obligatoria</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="direccion">Direccion</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class=" ti-location-pin"></i></div>
+                    <input type="text" class="form-control" id="direccion" placeholder="Ingrese direccion"
+                        formControlName="direccion">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Genero</label>
+                <select class="form-control custom-select" formControlName="genero">
+                    <option value="Femenino">Femenino</option>
+                    <option value="Masculino">Masculino</option>
+                </select>
+                <small class="form-control-feedback"> Seleccione el genero </small>
+            </div>
+
+
+            <div class="form-group">
+                <label for="fechaIngreso">Fecha Ingreso a la empresa *</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-clock-o"></i></div>
+                    <input type="date" class="form-control" id="fechaIngresoEmpresa"
+                        placeholder="Fecha Ingreso a la empresa" formControlName="fechaIngresoEmpresa"
+                        [value]="registerForm.get('fechaIngresoEmpresa')?.value">
+                </div>
+                <div class="text-danger">
+                    <p *ngIf="campoNoValido('fechaIngresoEmpresa')">La fecha de ingreso a la empresa es obligatoria</p>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="NumeroCuenta">Numero Cuenta</label>
+                <div class="input-group">
+                    <div class="input-group-addon"><i class=" ti-wallet"></i></div>
+                    <input type="number" class="form-control" id="NumeroCuenta" placeholder="Ingrese Numero Cuenta"
+                        formControlName="numeroCuenta">
+                </div>
+            </div>
+
+
+
+            <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+            <a (click)="cancelarGuardado()" class="btn btn-inverse waves-effect waves-light">Cancelar</a>
+        </div>
+    </form>
+
+</div>

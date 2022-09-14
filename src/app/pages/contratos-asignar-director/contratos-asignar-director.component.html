@@ -1,0 +1,470 @@
+<div class="col">
+
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div style="height: 10px;"></div>
+                <input type="text" class="form-control" placeholder="Buscar contrato"
+                    (keyup.enter)="buscar(txtBusqueda.value)" #txtBusqueda>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="cargando">
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <h4 class="alert-heading">Cargando</h4>
+            <i class="fa fa-spin fa-refresh fa-2x"></i>
+            <p class="mb-0">Por favor espere...</p>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="!cargando">
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Contratos Digitales</h4>
+                <h6 class="card-subtitle">Lista de todos los contratos existentes en el sistema</h6>
+                <div class="table-responsive">
+                    <table class="table full-color-table full-inverse-table hover-table">
+                        <thead>
+                            <tr>
+
+                                <th class="w101">Director asignado</th>
+                                <th class="w100">Estado</th>
+                                <th class="w100">Marcas</th>
+                                <th class="w100">Fecha Entrevista</th>
+                                <th>PEEA</th>
+                                <th>Datos Entrevista inicial</th>
+                                <th class="w100">Entrevista Inicial</th>
+                                <th class="w100">Fecha contrato</th>
+                                <th class="w100">Codigo</th>
+                                <th class="w100">Representante</th>
+                                <th class="w100">Cedula Representante</th>
+                                <th class="w100">Asesor</th>
+                                <th class="w100">Valor Matricula</th>
+                                <th class="w100">Valor Total</th>
+                                <th class="w100">Forma de pago</th>
+                                <th class="w100">Fecha Aprobacion</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let contrato of contratos">
+                                <td>
+                                    <div style="width: 200px;">
+                                        <ng-multiselect-dropdown [placeholder]="'Seleccione Director'"
+                                            [settings]="dropdownSettings" [data]="dropdownListPersona"
+                                            (onSelect)="onItemSelectpersona($event)"
+                                            (onSelectAll)="onSelectAllpersona($event)"
+                                            (onDeSelect)="onDeSelectpersona($event)"
+                                            (onDeSelectAll)="onDeSelectAllpersona($event)"
+                                            [(ngModel)]="contrato.directorAsignado" (click)="enviarContrato(contrato)">
+                                        </ng-multiselect-dropdown>
+                                    </div>
+
+
+                                </td>
+                                <td>
+                                    <button type="button"
+                                        [ngClass]="{'btn-warning': contrato.estadoPrograma == 'Entrevista Agendada', 'btn-success': contrato.estadoPrograma == 'Entrevista realizada', 'btn-danger':contrato.estadoPrograma == 'Cliente no atendido'}"
+                                        class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        {{contrato.estadoPrograma}}
+                                    </button>
+                                    <div class="dropdown-menu animated slideInUp" x-placement="top-start"
+                                        style="position: absolute; transform: translate3d(0px, -2px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        <a class="dropdown-item"
+                                            (click)="actualizarEstadoPrograma('Cliente no atendido', contrato)">Cliente
+                                            no atendido</a>
+                                        <a class="dropdown-item"
+                                            (click)="actualizarEstadoPrograma('Entrevista realizada', contrato)">Entrevista
+                                            realizada</a>
+                                        <a class="dropdown-item"
+                                            (click)="actualizarEstadoPrograma('Entrevista Agendada', contrato)">Entrevista
+                                            Agendada</a>
+                                        <a class="dropdown-item"
+                                            (click)="actualizarEstadoPrograma('Primero TOMATIS', contrato)">Primero
+                                            TOMATIS</a>
+                                        <a class="dropdown-item"
+                                            (click)="actualizarEstadoPrograma('Primero CHARLOTTE', contrato)">Primero
+                                            CHARLOTTE</a>
+                                        <a class="dropdown-item"
+                                            (click)="actualizarEstadoPrograma('No pagado', contrato)">No pagado</a>
+                                    </div>
+                                </td>
+                                <td (click)="mostrarDatosModal(contrato)">
+                                    <div *ngFor="let marcas of contrato?.marcasVendidas">
+                                        {{marcas?.nombre}}
+                                    </div>
+                                </td>
+                                <td (click)="mostrarDatosModal(contrato)">
+                                    <div *ngFor="let dato of contrato?.agendaEntrevista">
+                                        <span>{{dato?.fecha | date:'dd-MM-yyyy'}} - {{dato?.marca}}</span>
+                                    </div>
+                                </td>
+                                <td (click)="mostrarDatosModal(contrato)">
+                                    <div *ngFor="let dato of contrato?.pea">
+                                        {{dato.nombrePea}} realizado: {{dato.marca}}
+                                    </div>
+                                </td>
+                                <td (click)="mostrarDatosModal(contrato)">
+                                    <div *ngFor="let dato of contrato?.entrevistaInicial">
+                                        {{dato.marca}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" (click)="entrevistaInicial(contrato)"
+                                        class="btn btn-rounded btn-block btn-outline-secondary"
+                                        *hasRole="['Super_Admin_role','Admin_Charlotte_Academico_role','Admin_UK_Academico_role']"
+                                        >Realizar entrevista
+                                        Incial CH</button>
+                                    <button type="button" (click)="entrevistaInicialIL(contrato)"
+                                    *hasRole="['Super_Admin_role','Admin_Ilvem_Academico_role']"
+                                        class="btn btn-rounded btn-block btn-outline-secondary">Realizar entrevista
+                                        Incial IL</button>
+                                    <button type="button" (click)="entrevistaInicialTM(contrato)"
+                                    *hasRole="['Super_Admin_role','Admin_Tomatis_Academico_role']"
+                                        class="btn btn-rounded btn-block btn-outline-secondary">Realizar entrevista
+                                        Incial TM</button>
+                                </td>
+
+                                <td (click)="mostrarDatosModal(contrato)">{{contrato?.createdAt | date:"dd-MM-yyyy hh:mm"}}</td>
+                                <td (click)="mostrarDatosModal(contrato)">{{contrato?.codigo}}</td>
+                                <td (click)="mostrarDatosModal(contrato)">
+                                    {{contrato?.idRepresentante?.nombresApellidos}}</td>
+                                <td (click)="mostrarDatosModal(contrato)">{{contrato?.idRepresentante?.cedula}}</td>
+                                <td (click)="mostrarDatosModal(contrato)">{{contrato?.addedUser?.nombresApellidos}}</td>
+                                <td (click)="mostrarDatosModal(contrato)">{{contrato?.valorMatricula}}</td>
+                                <td (click)="mostrarDatosModal(contrato)">{{contrato?.valorTotal}}</td>
+                                <td (click)="mostrarDatosModal(contrato)">{{contrato?.formaPago}}</td>
+                                <td (click)="mostrarDatosModal(contrato)"
+                                    *ngIf="contrato?.fechaAprobacion != '1989-12-31'">{{contrato?.fechaAprobacion | date:"dd-MM-yyyy hh:mm"}}</td>
+                                <td (click)="mostrarDatosModal(contrato)"
+                                    *ngIf="contrato?.fechaAprobacion == '1989-12-31'">Pendiente</td>
+
+
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <div *ngIf="txtBusqueda.value.length === 0">
+                    <button (click)="paginar(-5)" class="btn btn-secondary">Anterior</button>
+                    &nbsp;
+                    <button (click)="paginar(5)" class="btn btn-secondary">Siguiente</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal para ver los datos del contrato -->
+<div class="fondo-modal-imagen animated fadeIn fast" [class.oculto]="mostraModal">
+    <div id="responsive-modal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        style="display: block;padding-right: 17px; overflow-y: initial">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Datos Contrato</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        (click)="cerrarModal()">×</button>
+                </div>
+
+                <div class="card-body">
+                    <h4 class="card-title">Acciones</h4>
+                    <h6 class="card-subtitle">Datos del contrato</h6>
+                    <div class="row button-group">
+
+                        <div class="col-md-12">
+                            <button (click)="generarPDF()" type="button" class="btn btn-block btn-outline-success"><i
+                                    class="fa fa-file-pdf-o"></i> PDF</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button *hasRole="['Super_Admin_role','Admin_Charlotte_Academico_role','Admin_UK_Academico_role']" (click)="pea17chuk()" type="button" class="btn btn-block btn-outline-primary"><i
+                                    class="fa fa-check-square" ></i> PEEA 17 CH-UK</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button *hasRole="['Super_Admin_role','Admin_Charlotte_Academico_role','Admin_UK_Academico_role']" (click)="pea18chuk()" type="button" class="btn btn-block btn-outline-primary"><i
+                                    class="fa fa-check-square"></i> PEEA 18 CH-UK</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button *hasRole="['Super_Admin_role','Admin_Ilvem_Academico_role']" (click)="pea17il()" type="button" class="btn btn-block btn-outline-primary"><i
+                                    class="fa fa-check-square"></i> PEEA 17 Ilvem</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button *hasRole="['Super_Admin_role','Admin_Ilvem_Academico_role']" (click)="pea18il()" type="button" class="btn btn-block btn-outline-primary"><i
+                                    class="fa fa-check-square"></i> PEEA 18 Ilvem</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button *hasRole="['Super_Admin_role','Admin_Tomatis_Academico_role']" (click)="pea17tm()" type="button" class="btn btn-block btn-outline-primary"><i
+                                    class="fa fa-check-square"></i> PEEA 17 Tomatis</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button *hasRole="['Super_Admin_role','Admin_Tomatis_Academico_role']" (click)="pea18tm()" type="button" class="btn btn-block btn-outline-primary"><i
+                                    class="fa fa-check-square"></i> PEEA 18 Tomatis</button>
+                        </div>
+                        <!-- 
+                        <div class="col-md-6">
+                            <button (click)="abrirModalVoucher()" type="button" class="btn btn-block btn-outline-info"><i
+                                    class="fa fa-plus"></i> Agregar Voucher</button>
+                        </div> -->
+
+                    </div>
+
+                    <div class="row p-t-20">
+                        <h4>Entrevistas Agendadas</h4>
+                        <div>
+                            <h5>Agrege la fecha de la cita</h5>
+                        </div>
+                        <br>
+                        <button type="button" class="btn btn-info btn-circle btn-lg " (click)="abrirModalFecha()"><i class="fa fa-plus"></i>
+                        </button>
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Marca</th>
+                                            <th>Fecha</th>
+                                            <th>Estado</th>
+                                            <th>Asigando</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let fechaEntrevista of contratoSeleccionado?.agendaEntrevista; let index=index">
+                                            <td> {{fechaEntrevista?.marca }} </td>
+                                            <td> {{fechaEntrevista.fecha | date:"dd-MM-yyyy hh:mm"}} </td>
+                                            <td>
+                                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                                    aria-haspopup="true" aria-expanded="false">
+                                                    {{fechaEntrevista?.estado}}
+                                                </button>
+                                                <div class="dropdown-menu animated slideInUp" x-placement="top-start"
+                                                    style="position: absolute; transform: translate3d(0px, -2px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                    <a class="dropdown-item" (click)="estadoFecha(fechaEntrevista, 'Agendada', index)">Agendada</a>
+                                                    <a class="dropdown-item" (click)="estadoFecha(fechaEntrevista, 'Realizada', index)">Realizada</a>
+                                                    <a class="dropdown-item" (click)="estadoFecha(fechaEntrevista, 'Reagendada', index)">Reagendada</a>
+                                                    <a class="dropdown-item" (click)="estadoFecha(fechaEntrevista, 'Rechazada', index)">Rechazada</a>
+
+                                                </div>
+                                            </td>
+
+                                            
+                                            <td>{{fechaEntrevista?.asignado[0]?.nombre}}</td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row p-t-20">
+                        <div class="col-md-6">
+                            <table class="table .color-table .dark-table">
+
+                                <tr *ngFor="let nombreatributo of atributostablaContrato?.nombreAtributos">
+                                    <td>{{nombreatributo}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table .color-table .dark-table">
+
+                                <tr *ngFor="let idatributo of atributostablaContrato?.idAtributos ">
+                                    <td *ngIf="idatributo==null">--</td>
+                                    <td *ngIf="idatributo!=null">{{idatributo}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class="row p-t-20">
+                        <div class="card-body">
+                            <h4 class="card-title"> Datos Representante</h4>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div style="height: 10px;"></div>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Nombre</th>
+                                                            <th>Cedula</th>
+                                                            <th>Editar</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>{{datosRepresentante?.nombresApellidos}}</td>
+                                                            <td>{{datosRepresentante?.cedula}}</td>
+                                                            <td class="text-nowrap">
+                                                                <a data-toggle="tooltip" data-original-title="Editar"
+                                                                    (click)="editarRepresentante(datosRepresentante)">
+                                                                    <i class="ti-pencil"></i>
+                                                                </a>
+                                                            </td>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row p-t-20">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title"> Datos Estudiantes</h4>
+                                <div style="height: 10px;"></div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Estado</th>
+                                                <th>Nombre</th>
+                                                <th>Cedula</th>
+                                                <th>Editar datos estudiante</th>
+                                                <th>Editar programa estudiante</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let estudiante of datosEstudiantes;let indice=index">
+                                                <td>
+                                                    <button type="button" class="btn dropdown-toggle"
+                                                        data-toggle="dropdown" aria-haspopup="true"
+                                                        aria-expanded="false">
+                                                        {{estudiante.estado}}
+                                                    </button>
+                                                    <div class="dropdown-menu animated slideInUp"
+                                                        x-placement="top-start"
+                                                        style="position: absolute; transform: translate3d(0px, -2px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                                        <a class="dropdown-item"
+                                                            (click)="actualizarEstadoEstudiante('Activo', estudiante)">Activo</a>
+                                                        <a class="dropdown-item"
+                                                            (click)="actualizarEstadoEstudiante('Incorporado', estudiante)">Incorporado</a>
+                                                        <a class="dropdown-item"
+                                                            (click)="actualizarEstadoEstudiante('Retirado', estudiante)">Retirado</a>
+                                                        <a class="dropdown-item"
+                                                            (click)="actualizarEstadoEstudiante('Espera', estudiante)">Espera</a>
+                                                        <a class="dropdown-item"
+                                                            (click)="actualizarEstadoEstudiante('Rechazadoo', estudiante)">Rechazado</a>
+                                                    </div>
+                                                </td>
+                                                <td>{{estudiante.nombresApellidos}}</td>
+                                                <td>{{estudiante.cedula}}</td>
+                                                <td class="text-nowrap">
+                                                    <a data-toggle="tooltip" data-original-title="Editar"
+                                                        (click)="editarEstudiante(estudiante)">
+                                                        <i class="ti-pencil"></i>
+                                                    </a>
+                                                </td>
+                                                <td class="text-nowrap">
+                                                    <a data-toggle="tooltip" data-original-title="Editar"
+                                                        (click)="editarProgramaEstudiante(estudiante)">
+                                                        <i class="ti-pencil"></i>
+                                                    </a>
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="fondo-modal-imagen animated fadeIn fast" [class.oculto]="mostraModalFecha">
+    <div id="responsive-modal" class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        style="display: block;padding-right: 17px; overflow-y: initial">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Agregar una cita</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                        (click)="cerrarModalFecha()">×</button>
+                </div>
+
+                <div class="card-body">
+                    <h4 class="card-title">Fecha</h4>
+                    <br>
+
+                    <div class="form-group">
+                        <label for="exampleInputuname">Fecha *</label>
+                        <div class="input-group">
+                            <input class="form-control" type="text" mwlFlatpickr [altInput]="true" [convertModelValue]="false"
+                        [enableTime]="true" dateFormat="Y-m-d H:i" altFormat="F j, Y H:i"
+                        [inline]="false" #fechaEntrevista>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="demo-switch-title">Estado</div>
+                        <select class="form-control custom-select" #estadoEntrevista>
+                            <option value="Agendada">Agendada</option>
+                            <option value="Realizada">Realizada</option>
+                            <option value="Reagendada">Reagendada</option>
+                            <option value="Rechazada">Rechazada</option>
+                        </select>
+                        <small class="form-control-feedback"> Seleccione el genero </small>
+                    </div>
+
+                    <div class="form-group">
+                        <ng-multiselect-dropdown [placeholder]="'Seleccione'" [settings]="dropdownSettings"
+                            [data]="dropdownListPersona2" (onSelect)="onItemSelectpersona2($event)"
+                            (onSelectAll)="onSelectAllpersona2($event)" (onDeSelect)="onDeSelectpersona2($event)"
+                            (onDeSelectAll)="onDeSelectAllpersona2($event)" [(ngModel)]="director">
+                        </ng-multiselect-dropdown>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default waves-effect" data-dismiss="modal"
+                        (click)="cerrarModalFecha()">Close</button>
+                    <button type="button" (click)="agregarFecha()"
+                        class="btn btn-success waves-effect waves-light">Agregar</button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

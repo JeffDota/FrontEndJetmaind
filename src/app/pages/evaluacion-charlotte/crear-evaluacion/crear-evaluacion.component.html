@@ -1,0 +1,98 @@
+<div class="card">
+
+    <form (ngSubmit)="crear()" autocomplete="off" [formGroup]="registerForm">
+
+        <div class="card-body">
+
+            <div class="form-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label for="exampleInputuname">Fecha *</label>
+                    </div>
+                    <div class="panel-body">
+                        <input class="form-control" type="text" mwlFlatpickr [altInput]="true"
+                            [convertModelValue]="true" formControlName="fecha">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Docente *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Docente'" [settings]="dropdownSettingsSingle"
+                    [data]="dropdownListPersonas" (onSelect)="onItemSelectPersona($event)"
+                    (onSelectAll)="onSelectAllPersona($event)" (onDeSelect)="onDeSelectPersona($event)"
+                    (onDeSelectAll)="onDeSelectAllPersona($event)" formControlName="idDocente">
+                </ng-multiselect-dropdown>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Horario *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Docente'" [settings]="dropdownSettingsSingle"
+                    [data]="dropdownListHorarios" (onSelect)="onItemSelectHorario($event)"
+                    (onSelectAll)="onSelectAllHorario($event)" (onDeSelect)="onDeSelectHorario($event)"
+                    (onDeSelectAll)="onDeSelectAllHorario($event)" formControlName="idHorario">
+                </ng-multiselect-dropdown>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputuname">Estudiantes *</label>
+                <ng-multiselect-dropdown [placeholder]="'Seleccione Docente'" [settings]="dropdownSettingsSingle"
+                    [data]="dropdownListEstudiantes" (onSelect)="onItemSelectEstudiante($event)"
+                    (onSelectAll)="onSelectAllEstudiante($event)" (onDeSelect)="onDeSelectEstudiante($event)"
+                    (onDeSelectAll)="onDeSelectAllEstudiante($event)" formControlName="idEstudiantes">
+                </ng-multiselect-dropdown>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="demo-switch-title">Nombre</div>
+                    <select class="form-control custom-select" formControlName="nombre">
+                        <option value="Kid">Kid</option>
+                        <option value="Pandy">Pandy</option>
+                        <option value="Top Notch">Top Notch</option>
+                    </select>
+                    <small class="form-control-feedback"> Seleccione uno </small>
+                </div>
+            </div>
+            <div *ngIf="mostrarCamposSegunNombreListening()" class="col-md-6">
+                <label for="">Listening</label>
+                <input class="form-control" type="text" formControlName="listening">
+            </div>
+            <div *ngIf="mostrarCamposSegunNombreReading()" class="col-md-6">
+                <label for="">Reading</label>
+                <input class="form-control" type="text" formControlName="reading">
+            </div>
+            <div *ngIf="mostrarCamposSegunNombreGrammar()" class="col-md-6">
+                <label for="">Grammar</label>
+                <input class="form-control" type="text" formControlName="grammar">
+            </div>
+            <div *ngIf="mostrarCamposSegunNombreWritting()" class="col-md-6">
+                <label for="">Writting</label>
+                <input class="form-control" type="text" formControlName="writting">
+            </div>
+            <div *ngIf="mostrarCamposSegunNombreSpeaking()" class="col-md-6">
+                <label for="">Speaking</label>
+                <input class="form-control" type="text" formControlName="speaking">
+            </div>
+            <div *ngIf="mostrarCamposSegunNombrePlatform()" class="col-md-6">
+                <label for="">Platform</label>
+                <input class="form-control" type="text" formControlName="platform">
+            </div>
+
+
+            
+
+
+            <br>
+            <br>
+
+
+            <div>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Guardar</button>
+                <a (click)="cancelarGuardado()" class="btn btn-inverse waves-effect waves-light">Cancelar</a>
+            </div>
+
+        </div>
+    </form>
+
+</div>
